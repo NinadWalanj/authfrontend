@@ -74,23 +74,7 @@ const TwoFA = () => {
       );
 
       if (res.data.redirectTo) {
-        toast.success("Login successful! Redirecting...", {
-          position: "top-center",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: false,
-          progress: undefined,
-          theme: "dark",
-          closeButton: false,
-        });
-
-        // Small delay to ensure session cookie is properly set
-        setTimeout(() => {
-          navigate(res.data.redirectTo);
-          window.location.reload(); // Force reload after navigating
-        }, 2500);
+        navigate(res.data.redirectTo);
       } else {
         setMessage(res.data.message || "2FA verified.");
       }
@@ -98,7 +82,26 @@ const TwoFA = () => {
       const errorMsg =
         err.response?.data?.message || "2FA verification failed.";
       setMessage(errorMsg);
-      // your other error handling...
+      if (errorMsg.toLowerCase().includes("10 minutes")) {
+        toast.error(
+          "All attempts have been exhausted. Redirecting to the login page...",
+          {
+            position: "top-center",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            theme: "dark",
+            closeButton: false,
+          }
+        );
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 4000); // give user time to read the toast
+      }
     } finally {
       setLoading(false);
     }
