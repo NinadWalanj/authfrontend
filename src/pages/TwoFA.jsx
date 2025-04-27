@@ -77,15 +77,22 @@ const TwoFA = () => {
         toast.success("Login successful! Redirecting...", {
           position: "top-center",
           autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
           theme: "dark",
+          closeButton: false,
         });
 
         setTimeout(() => {
-          window.location.href = res.data.redirectTo; // 💥 Full page reload
+          navigate(res.data.redirectTo);
         }, 2000);
-      } else {
-        setMessage(res.data.message || "2FA verified.");
       }
+      //else {
+      //   setMessage(res.data.message || "2FA verified.");
+      // }
     } catch (err) {
       const errorMsg =
         err.response?.data?.message || "2FA verification failed.";

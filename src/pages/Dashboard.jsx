@@ -15,7 +15,9 @@ const Dashboard = () => {
       .then((res) => {
         setMessage(res.data.message);
       })
-      .catch(() => {
+      // eslint-disable-next-line no-unused-vars
+      .catch((err) => {
+        // alert(err);
         navigate("/");
       });
   }, [navigate]);
